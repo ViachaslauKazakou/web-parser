@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-28T19:00:00+01:00",
+  "title": "Design System: ForumScope",
+  "extensions": {
+    "colorMeta": {
+      "primary": {"role":"primary","displayName":"Leaf-field green","canonical":"#2f5e3d","tonalRamp":["#001300","#002b0d","#154526","#326140","#4f7e5c","#6c9d78","#8abc97","#aadcb6"]},
+      "primary-deep": {"role":"primary","displayName":"Canopy green","canonical":"#244a30","tonalRamp":["#001201","#022a12","#1e442a","#395f44","#557c60","#729b7d","#90ba9b","#b0daba"]},
+      "primary-soft": {"role":"primary","displayName":"Pressed-sage tint","canonical":"#dce8d8","tonalRamp":["#060e04","#1c2519","#343e31","#4f594b","#6b7567","#889384","#a7b2a3","#c6d2c2"]},
+      "field-ground": {"role":"neutral","displayName":"Warm plate ground","canonical":"#f6f1e6","tonalRamp":["#0e0b05","#252119","#3e3a31","#59554c","#757167","#938f85","#b2ada3","#d2cdc3"]},
+      "surface": {"role":"neutral","displayName":"Specimen sheet","canonical":"#fffdf8","tonalRamp":["#0c0b08","#23211e","#3c3a36","#575551","#73716d","#918f8a","#b0aea9","#cfcdc9"]},
+      "sage": {"role":"secondary","displayName":"Sage ink","canonical":"#7fa37a","tonalRamp":["#001100","#092a06","#23441f","#3e5f3a","#5a7c55","#779b72","#95ba90","#b4daaf"]},
+      "rule": {"role":"neutral","displayName":"Sepia rule","canonical":"#d9cdb5","tonalRamp":["#120a00","#29200d","#433925","#5e543f","#7b705a","#998e77","#b8ad95","#d8ccb4"]},
+      "rule-strong": {"role":"neutral","displayName":"Strong sepia rule","canonical":"#b6a98d","tonalRamp":["#130900","#2a2007","#443920","#60543a","#7c7056","#9a8e73","#baad91","#daccb0"]},
+      "selection": {"role":"tertiary","displayName":"Registered scarlet","canonical":"#b21e18","tonalRamp":["#3c0000","#5e0000","#800000","#a30205","#c6352b","#ea584a","#ff7968","#ff9987"]},
+      "ink": {"role":"neutral","displayName":"Primary ink","canonical":"#242720","tonalRamp":["#0a0c07","#20231c","#393c34","#53574f","#6f736b","#8d9188","#acb0a7","#cbcfc6"]},
+      "graphite": {"role":"neutral","displayName":"Reading graphite","canonical":"#4a4a44","tonalRamp":["#0c0b07","#22221d","#3b3b35","#565650","#72726c","#909089","#aeaea7","#cecec7"]},
+      "muted": {"role":"neutral","displayName":"Metadata graphite","canonical":"#67665f","tonalRamp":["#0c0b06","#23221c","#3c3b34","#56554f","#73726b","#908f88","#afaea6","#cfcec6"]},
+      "relevance-high": {"role":"data","displayName":"High match","canonical":"#2f5e3d","tonalRamp":["#001300","#002b0d","#154526","#326140","#4f7e5c","#6c9d78","#8abc97","#aadcb6"]},
+      "relevance-medium": {"role":"data","displayName":"Moderate match","canonical":"#88641d","tonalRamp":["#1e0100","#381800","#543300","#714e00","#8f6b25","#ae8845","#cea764","#efc784"]},
+      "relevance-low": {"role":"data","displayName":"Low match","canonical":"#9b4b22","tonalRamp":["#2c0000","#4a0000","#691d00","#893b0d","#a95830","#ca764e","#ec956c","#ffb48b"]},
+      "relevance-offtopic": {"role":"data","displayName":"Outside focus","canonical":"#656761","tonalRamp":["#0a0c08","#21221d","#3a3b36","#545650","#70726c","#8e908a","#adafa8","#cccfc8"]}
+    },
+    "typographyMeta": {
+      "display": {"displayName":"Folio title","purpose":"Page titles and topic titles; Georgia carries the restrained engraved/italic voice."},
+      "body": {"displayName":"Workhorse UI","purpose":"Forms, navigation, results, and explanations; system UI for local rendering without external font requests."},
+      "label": {"displayName":"Registered metadata","purpose":"Compact labels and measured score numerals."}
+    },
+    "shadows": [
+      {"name":"primary-hover","value":"0 3px 8px rgb(36 74 48 / 16%)","purpose":"A small lift only while the primary action is hovered."},
+      {"name":"toast-raised","value":"0 7px 18px rgb(40 47 36 / 12%), 0 2px 4px rgb(40 47 36 / 9%)","purpose":"Transient toast feedback above the work surface."}
+    ],
+    "motion": [
+      {"name":"control-transition","value":"150ms ease-out","purpose":"Color/border hover and focus-state changes."},
+      {"name":"content-reveal","value":"280ms cubic-bezier(0.16, 1, 0.3, 1)","purpose":"One-time parse preview and result reveal; content is visible without motion."},
+      {"name":"spinner","value":"700ms linear infinite","purpose":"Explicit loading state on active submit buttons."}
+    ],
+    "breakpoints": [
+      {"name":"wide","value":"1600px"},
+      {"name":"compact","value":"1160px"},
+      {"name":"stack-rail","value":"930px"},
+      {"name":"mobile-navigation","value":"720px"},
+      {"name":"narrow-mobile","value":"440px"}
+    ]
+  },
+  "components": [
+    {
+      "name":"Primary button",
+      "kind":"button",
+      "refersTo":"button-primary",
+      "description":"The single clear action that advances a collection or analysis step.",
+      "html":"<button class=\"ds-button-primary\">Разобрать тему</button>",
+      "css":".ds-button-primary{min-height:42px;padding:9px 14px;border:1px solid var(--forest);border-radius:4px;color:#fffdf8;background:var(--forest);font:650 13px/1.2 ui-sans-serif,system-ui,sans-serif;cursor:pointer;transition:background-color 150ms ease-out,box-shadow 150ms ease-out}.ds-button-primary:hover:not(:disabled){background:var(--forest-deep);box-shadow:0 3px 8px rgb(36 74 48 / 16%)}.ds-button-primary:focus-visible{outline:3px solid var(--scarlet);outline-offset:3px}.ds-button-primary:disabled{color:#67665f;background:#ebe6db;cursor:not-allowed}"
+    },
+    {
+      "name":"Quiet button",
+      "kind":"button",
+      "refersTo":"button-quiet",
+      "description":"A secondary export or recovery action that stays visually subordinate.",
+      "html":"<button class=\"ds-button-quiet\">Скачать CSV</button>",
+      "css":".ds-button-quiet{min-height:34px;padding:6px 10px;border:1px solid var(--sepia-dark);border-radius:4px;color:var(--forest);background:transparent;font:650 12px/1.2 ui-sans-serif,system-ui,sans-serif;cursor:pointer}.ds-button-quiet:hover{border-color:var(--forest);background:#edf2e8}.ds-button-quiet:focus-visible{outline:3px solid var(--scarlet);outline-offset:3px}"
+    },
+    {
+      "name":"Text field",
+      "kind":"input",
+      "refersTo":"input-field",
+      "description":"A high-contrast native field with compact folio rules.",
+      "html":"<label class=\"ds-field-label\" for=\"ds-topic\">Адрес темы форума</label><input class=\"ds-field\" id=\"ds-topic\" type=\"url\" placeholder=\"https://searchengines.guru/…\">",
+      "css":".ds-field-label{display:block;margin-bottom:6px;color:var(--ink);font:650 12px/1.4 ui-sans-serif,system-ui,sans-serif}.ds-field{width:100%;min-height:43px;padding:9px 11px;border:1px solid var(--sepia-dark);border-radius:4px;color:var(--ink);background:#fffefa;font:400 14px/1.45 ui-sans-serif,system-ui,sans-serif}.ds-field::placeholder{color:#67665f}.ds-field:focus-visible{border-color:var(--forest);outline:3px solid rgb(47 94 61 / 15%);outline-offset:1px}"
+    },
+    {
+      "name":"Active navigation item",
+      "kind":"nav",
+      "refersTo":"nav-active",
+      "description":"A working navigation state anchored by a dark green field and narrow scarlet registration mark.",
+      "html":"<button class=\"ds-nav-active\" aria-current=\"page\">Новый анализ</button>",
+      "css":".ds-nav-active{position:relative;min-height:43px;padding:8px 10px;border:0;border-radius:3px;color:#fffdf8;background:var(--forest-deep);font:600 13px/1.4 ui-sans-serif,system-ui,sans-serif;text-align:left}.ds-nav-active::before{position:absolute;top:10px;bottom:10px;left:-18px;width:3px;background:#df8b79;content:\"\"}.ds-nav-active:focus-visible{outline:3px solid var(--scarlet);outline-offset:3px}"
+    },
+    {
+      "name":"Selected source tab",
+      "kind":"button",
+      "refersTo":"source-tab-selected",
+      "description":"A familiar source switcher with keyboard tabs and one thin registered selection line.",
+      "html":"<button class=\"ds-source-tab\" role=\"tab\" aria-selected=\"true\">JSON / CSV</button>",
+      "css":".ds-source-tab{position:relative;min-height:46px;padding:0 1px;border:0;color:var(--forest);background:transparent;font:680 13px/1.4 ui-sans-serif,system-ui,sans-serif}.ds-source-tab::after{position:absolute;right:0;bottom:-1px;left:0;height:2px;background:var(--scarlet);content:\"\"}.ds-source-tab:focus-visible{outline:3px solid var(--scarlet);outline-offset:3px}"
+    },
+    {
+      "name":"High relevance label",
+      "kind":"chip",
+      "refersTo":"relevance-high",
+      "description":"A written status label with a forest-green tone; state is never conveyed by color alone.",
+      "html":"<span class=\"ds-relevance-high\">Высокая</span>",
+      "css":".ds-relevance-high{display:inline-flex;align-items:center;min-height:21px;padding:2px 7px;border-radius:2px;color:var(--forest);background:#e1ebdc;font:700 9px/1.3 ui-sans-serif,system-ui,sans-serif}"
+    },
+    {
+      "name":"Evidence ruler",
+      "kind":"custom",
+      "refersTo":"evidence-ruler",
+      "description":"The signature equal-scale track: repeated ticks, green score fill, and a precise scarlet point.",
+      "html":"<div class=\"ds-ruler\" role=\"img\" aria-label=\"Оценка 69 из 100\"><span style=\"width:69%\"></span><b style=\"left:69%\"></b></div><div class=\"ds-ruler-scale\"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>",
+      "css":".ds-ruler{position:relative;height:8px;overflow:visible;border:1px solid #bac5b2;border-radius:2px;background:repeating-linear-gradient(90deg,#e2e9dc 0,#e2e9dc calc(25% - 1px),#bdcab5 calc(25% - 1px),#bdcab5 25%)}.ds-ruler>span{display:block;height:100%;border-radius:1px;background:var(--forest)}.ds-ruler>b{position:absolute;top:-4px;width:2px;height:14px;transform:translateX(-50%);background:var(--scarlet)}.ds-ruler-scale{display:flex;justify-content:space-between;margin-top:4px;color:var(--muted);font:400 9px/1.4 ui-sans-serif,system-ui,sans-serif;font-variant-numeric:tabular-nums}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Field Folio of Evidence",
+    "overview": "ForumScope translates the botanical folio into a calm, repeatable way to compare public discussion: each answer is registered against the same visible scale while the content remains a working forum-analysis tool. Deep leaf green anchors the shell; warm ground, restrained serif titles, measured density, and one evidence ruler carry the chosen world without changing familiar web navigation or controls.",
+    "keyCharacteristics": [
+      "Warm field ground and deep green navigation anchor.",
+      "Georgia display titles paired with readable system UI sans.",
+      "Flat surfaces, tonal layers, and fine sepia rules.",
+      "One fixed 0–100 evidence ruler repeated for every answer.",
+      "Scarlet marks selection/focus precisely; state labels remain textual."
+    ],
+    "rules": [
+      {"name":"The Registered Evidence Rule","body":"Scarlet marks a specific selected or measured point; it never floods a whole panel.","section":"colors"},
+      {"name":"The Two Voices Rule","body":"Serif is reserved for titles; operational copy, controls, evidence, and navigation stay in the system sans.","section":"typography"},
+      {"name":"The Shared Scale Rule","body":"Ranked answers always use one fixed 0–100 ruler with the same tick positions.","section":"layout"},
+      {"name":"The Flat Folio Rule","body":"Use tonal surfaces and hairline rules first; reserve elevation for transient feedback.","section":"elevation"}
+    ],
+    "dos": [
+      "Do keep navigation and primary actions anchored by leaf green.",
+      "Do compare answers on a common fixed-scale evidence ruler.",
+      "Do pair relevance color with a written label and numeric score.",
+      "Do keep demo content visibly marked synthetic and LLM use opt-in."
+    ],
+    "donts": [
+      "Don't use botanical drawings or textures as decoration.",
+      "Don't use scarlet as a second primary-action color.",
+      "Don't use decorative gradients, glass, or floating-card grids.",
+      "Don't present heuristic ranking as a moderation verdict."
+    ]
+  }
+}

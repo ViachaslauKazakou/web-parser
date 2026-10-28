@@ -207,6 +207,12 @@ tempCodeRunnerFile.py
 
 # Ruff stuff:
 .ruff_cache/
+.impeccable/build/
+.impeccable/config.local.json
+/data/
+core
+core.*
+*.core
 
 # PyPI configuration file
 .pypirc

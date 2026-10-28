@@ -1,0 +1,13 @@
+.env
+.venv/
+.git/
+.impeccable/
+.pytest_cache/
+__pycache__/
+*.py[cod]
+tests/
+*.log
+core
+core.*
+*.core
+data/

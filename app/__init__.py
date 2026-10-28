@@ -1,0 +1,1 @@
+"""ForumScope standalone application."""

@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#2f5e3d">
+    <meta name="description" content="Парсер форумных обсуждений и объяснимый анализ релевантности ответов.">
+    <title>ForumScope — рабочая область</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="/static/app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Перейти к рабочей области</a>
+    <svg class="symbol-library" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+      <symbol id="icon-grid" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1"/><rect x="13.5" y="3.5" width="7" height="7" rx="1"/><rect x="3.5" y="13.5" width="7" height="7" rx="1"/><rect x="13.5" y="13.5" width="7" height="7" rx="1"/></symbol>
+      <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></symbol>
+      <symbol id="icon-history" viewBox="0 0 24 24"><path d="M3.5 11a8.5 8.5 0 1 1 2.1 5.6"/><path d="M3.5 4.5V11h6.5M12 7v5l3.2 2"/></symbol>
+      <symbol id="icon-upload" viewBox="0 0 24 24"><path d="M12 15V3.8m0 0L7.8 8M12 3.8 16.2 8M4.5 14.5v5h15v-5"/></symbol>
+      <symbol id="icon-download" viewBox="0 0 24 24"><path d="M12 3.5v11m0 0 4.2-4.2M12 14.5l-4.2-4.2M4.5 15.5v4.7h15v-4.7"/></symbol>
+      <symbol id="icon-external" viewBox="0 0 24 24"><path d="M13 4h7v7M20 4l-9 9"/><path d="M18 13v5.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18.5v-11A1.5 1.5 0 0 1 5.5 6H11"/></symbol>
+      <symbol id="icon-chevron" viewBox="0 0 24 24"><path d="m8 10 4 4 4-4"/></symbol>
+      <symbol id="icon-leaf" viewBox="0 0 24 24"><path d="M20 4c-8.2.1-13.3 2.3-15.2 6.6-1.2 2.8.2 5.8 3.1 6.4C13.4 18.4 19.8 12.2 20 4Z"/><path d="M3.8 20c2.5-5.8 6.2-9.2 11.7-12"/></symbol>
+    </svg>
+
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Основная навигация">
+        <a class="brand" href="#workspace" data-view-link="workspace" aria-label="ForumScope — рабочая область">
+          <span class="brand-mark" aria-hidden="true">F</span>
+          <span class="brand-name">Forum<span>Scope</span></span>
+        </a>
+        <div class="rail-rule"></div>
+        <p class="nav-heading">Работа</p>
+        <nav class="primary-nav">
+          <button class="nav-link is-active" type="button" data-view-link="workspace" aria-current="page">
+            <svg aria-hidden="true"><use href="#icon-grid"></use></svg><span>Новый анализ</span>
+          </button>
+          <button class="nav-link" type="button" data-view-link="parser">
+            <svg aria-hidden="true"><use href="#icon-search"></use></svg><span>Посты автора</span>
+          </button>
+          <button class="nav-link" type="button" data-view-link="history">
+            <svg aria-hidden="true"><use href="#icon-history"></use></svg><span>История</span><span class="nav-count" id="history-count" hidden>0</span>
+          </button>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="rail-rule"></div>
+          <div class="service-status"><span class="status-dot" id="service-dot"></span><div><strong id="service-label">Проверка базы</strong><small id="service-detail">Подключение</small></div></div>
+          <p class="local-note">Локальная рабочая область<br>Доступ без учётной записи</p>
+        </div>
+      </aside>
+
+      <div class="workspace-shell">
+        <header class="topbar">
+          <div class="breadcrumbs"><span>ForumScope</span><span class="crumb-separator">/</span><span id="current-location">Рабочая область</span></div>
+          <div class="topbar-actions">
+            <span class="topbar-state"><span class="status-dot" id="top-status-dot"></span><span id="top-status-text">Готов к работе</span></span>
+            <button class="icon-button" id="refresh-history" type="button" aria-label="Обновить данные истории" title="Обновить данные">
+              <svg aria-hidden="true"><use href="#icon-history"></use></svg>
+            </button>
+          </div>
+        </header>
+
+        <main id="main-content" class="main-content">
+          <section class="view-panel" id="workspace-view" data-view-panel="workspace" aria-labelledby="workspace-title">
+            <div class="page-heading">
+              <div>
+                <h1 id="workspace-title">Новый анализ</h1>
+                <p>Соберите обсуждение, чтобы сравнить ответы по одной шкале релевантности.</p>
+              </div>
+              <span class="workspace-badge"><svg aria-hidden="true"><use href="#icon-leaf"></use></svg>Детерминированная оценка</span>
+            </div>
+
+            <div class="collection-layout">
+              <div class="collection-column">
+                <section class="collection-panel" aria-labelledby="source-heading">
+                  <div class="section-heading">
+                    <div><h2 id="source-heading">Источник обсуждения</h2><p>Выберите способ загрузки данных.</p></div>
+                  </div>
+                  <div class="source-tabs" role="tablist" aria-label="Источник обсуждения">
+                    <button class="source-tab is-selected" id="tab-url" type="button" role="tab" tabindex="0" aria-selected="true" aria-controls="source-url-panel" data-source-tab="url">Ссылка на тему</button>
+                    <button class="source-tab" id="tab-file" type="button" role="tab" tabindex="-1" aria-selected="false" aria-controls="source-file-panel" data-source-tab="file">JSON / CSV</button>
+                    <button class="source-tab" id="tab-manual" type="button" role="tab" tabindex="-1" aria-selected="false" aria-controls="source-manual-panel" data-source-tab="manual">Вручную</button>
+                  </div>
+
+                  <div class="source-panel" id="source-url-panel" role="tabpanel" aria-labelledby="tab-url" data-source-panel="url">
+                    <form id="topic-form" class="form-stack">
+                      <label class="field-label" for="topic-url">Адрес темы форума</label>
+                      <div class="url-input-row">
+                        <input id="topic-url" name="topic_url" type="url" inputmode="url" autocomplete="url" placeholder="https://searchengines.guru/ru/forum/..." required>
+                        <button class="button button-primary" type="submit" id="parse-topic-button">Разобрать тему</button>
+                      </div>
+                      <div class="field-row">
+                        <label class="field-label" for="max-messages">Ответов для сбора</label>
+                        <input id="max-messages" name="max_messages" type="number" min="0" max="500" value="50">
+                        <span class="field-hint">0 — все страницы, до защитного лимита</span>
+                      </div>
+                      <details class="advanced-options">
+                        <summary>Параметры анализа</summary>
+                        <div class="option-list">
+                          <label class="check-row"><input id="use-community" type="checkbox"><span>Учитывать форумный рейтинг ответа</span></label>
+                          <label class="check-row"><input id="use-llm-scoring" type="checkbox"><span>Уточнить оценку через LLM</span></label>
+                          <label class="check-row"><input id="use-llm-explain" type="checkbox"><span>Получить пояснения через LLM</span></label>
+                          <label class="field-label weight-control" for="llm-weight">Доля LLM в итоговом балле <output id="weight-output" for="llm-weight">35%</output>
+                            <input id="llm-weight" type="range" min="0" max="100" value="35">
+                          </label>
+                          <p class="field-hint">Для LLM задайте OPENAI_API_KEY в .env. Без ключа сохраняется обычный расчёт.</p>
+                        </div>
+                      </details>
+                    </form>
+                    <div class="parse-preview" id="parse-preview" hidden aria-live="polite">
+                      <div class="preview-topline"><span class="preview-label">Обсуждение собрано</span><span class="preview-count" id="preview-count"></span></div>
+                      <h3 id="preview-title"></h3>
+                      <p id="preview-description" class="preview-description"></p>
+                      <div class="preview-actions"><button class="button button-primary" id="analyze-parsed" type="button">Проанализировать ответы</button><button class="button button-quiet" id="reset-preview" type="button">Изменить источник</button></div>
+                      <details class="preview-opener"><summary>Показать исходное сообщение</summary><p id="preview-first-message"></p></details>
+                    </div>
+                  </div>
+
+                  <div class="source-panel" id="source-file-panel" role="tabpanel" aria-labelledby="tab-file" data-source-panel="file" hidden>
+                    <form id="upload-form" class="form-stack">
+                      <label class="file-drop" for="upload-file">
+                        <span class="file-icon"><svg aria-hidden="true"><use href="#icon-upload"></use></svg></span>
+                        <strong id="upload-label">Выберите файл JSON или CSV</strong>
+                        <span>До 5 МБ · JSON или UTF-8 CSV</span>
+                        <input id="upload-file" name="file" type="file" accept=".json,.csv,application/json,text/csv" required>
+                      </label>
+                      <p class="field-hint">JSON: topic.title и messages[].content. CSV: topic_title, content, author, message_external_id, rating.</p>
+                      <details class="advanced-options">
+                        <summary>Параметры анализа</summary>
+                        <div class="option-list">
+                          <label class="check-row"><input class="file-option-community" type="checkbox"><span>Учитывать форумный рейтинг ответа</span></label>
+                          <label class="check-row"><input class="file-option-llm-scoring" type="checkbox"><span>Уточнить оценку через LLM</span></label>
+                          <label class="check-row"><input class="file-option-llm-explain" type="checkbox"><span>Получить пояснения через LLM</span></label>
+                          <p class="field-hint">Для LLM задайте OPENAI_API_KEY в .env. Без ключа сохраняется обычный расчёт.</p>
+                        </div>
+                      </details>
+                      <button class="button button-primary" type="submit">Загрузить и оценить</button>
+                    </form>
+                  </div>
+
+                  <div class="source-panel" id="source-manual-panel" role="tabpanel" aria-labelledby="tab-manual" data-source-panel="manual" hidden>
+                    <form id="manual-form" class="form-stack">
+                      <label class="field-label" for="manual-title">Заголовок темы</label>
+                      <input id="manual-title" name="title" type="text" maxlength="500" required placeholder="Коротко сформулируйте тему обсуждения">
+                      <label class="field-label" for="manual-description">Описание темы <span class="optional-label">необязательно</span></label>
+                      <textarea id="manual-description" name="description" rows="2" placeholder="Контекст, который поможет сравнить ответы"></textarea>
+                      <label class="field-label" for="manual-first-message">Стартовое сообщение <span class="optional-label">необязательно</span></label>
+                      <textarea id="manual-first-message" name="first_message" rows="3" placeholder="Исходный вопрос автора темы"></textarea>
+                      <label class="field-label" for="manual-replies">Ответы участников</label>
+                      <textarea id="manual-replies" name="replies" rows="7" required placeholder="Вставьте каждый ответ отдельным блоком; разделяйте блоки пустой строкой"></textarea>
+                      <p class="field-hint">Пустая строка между блоками отделяет ответы. Автор для каждого ответа можно указать после «Автор: » в первой строке.</p>
+                      <details class="advanced-options">
+                        <summary>Параметры анализа</summary>
+                        <div class="option-list">
+                          <label class="check-row"><input class="option-community" type="checkbox"><span>Учитывать форумный рейтинг ответа</span></label>
+                          <label class="check-row"><input class="option-llm-scoring" type="checkbox"><span>Уточнить оценку через LLM</span></label>
+                          <label class="check-row"><input class="option-llm-explain" type="checkbox"><span>Получить пояснения через LLM</span></label>
+                        </div>
+                      </details>
+                      <button class="button button-primary" type="submit">Оценить ответы</button>
+                    </form>
+                  </div>
+                </section>
+
+                <section class="results-section" id="results-section" aria-labelledby="results-title" hidden>
+                  <div class="results-heading">
+                    <div><h2 id="results-title">Ранжирование ответов</h2><p id="result-context"></p></div>
+                    <div class="export-actions">
+                      <button class="button button-quiet button-small" id="export-csv" type="button"><svg aria-hidden="true"><use href="#icon-download"></use></svg>CSV</button>
+                      <button class="button button-quiet button-small" id="export-json" type="button"><svg aria-hidden="true"><use href="#icon-download"></use></svg>JSON</button>
+                    </div>
+                  </div>
+                  <div class="analysis-summaries" id="analysis-summaries" hidden>
+                    <article><h3>Сильное соответствие</h3><p id="best-summary"></p></article>
+                    <article><h3>Слабое соответствие</h3><p id="worst-summary"></p></article>
+                  </div>
+                  <div class="analysis-warnings" id="analysis-warnings" hidden></div>
+                  <div class="result-tools">
+                    <label class="sr-only" for="result-filter">Фильтр по уровню релевантности</label>
+                    <select id="result-filter"><option value="all">Все ответы</option><option value="high">Высокая</option><option value="medium">Средняя</option><option value="low">Низкая</option><option value="offtopic">Вне темы</option></select>
+                    <span class="result-count" id="result-count"></span>
+                  </div>
+                  <div id="ranked-results" class="ranked-results" aria-live="polite"></div>
+                  <p class="score-note">Оценка — воспроизводимая эвристика по совпадению текста и структуре ответа, а не модераторское решение.</p>
+                </section>
+                <div class="empty-results" id="empty-results">
+                  <div class="empty-mark" aria-hidden="true"><svg><use href="#icon-leaf"></use></svg></div>
+                  <h2>Сначала соберите обсуждение</h2>
+                  <p>Вставьте ссылку на тему, загрузите JSON/CSV или введите ответы вручную. Результаты появятся здесь.</p>
+                </div>
+              </div>
+
+              <aside class="insight-rail" aria-label="Справка о методе">
+                <section class="method-panel">
+                  <div class="method-heading"><svg aria-hidden="true"><use href="#icon-leaf"></use></svg><h2>Как читать оценку</h2></div>
+                  <p>Каждый ответ проходит одинаковую шкалу от 0 до 100. Сходство с заголовком, описанием и стартовым сообщением видно отдельно.</p>
+                  <div class="scale-example" aria-label="Пример шкалы от нуля до ста">
+                    <div class="scale-line"><span></span><span></span><span></span><span></span><b></b></div>
+                    <div class="scale-ticks"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+                  </div>
+                  <div class="legend-list">
+                    <div><span class="legend-dot relevance-high"></span><span>Высокая</span><small>от 45</small></div>
+                    <div><span class="legend-dot relevance-medium"></span><span>Средняя</span><small>от 25</small></div>
+                    <div><span class="legend-dot relevance-low"></span><span>Низкая</span><small>от 15</small></div>
+                    <div><span class="legend-dot relevance-offtopic"></span><span>Вне темы</span><small>ниже 15</small></div>
+                  </div>
+                </section>
+                <section class="privacy-panel">
+                  <h2>Данные остаются здесь</h2>
+                  <p>Разбор сохраняется в локальной базе для истории. Внешняя LLM вызывается только после включения этой опции.</p>
+                </section>
+                <div class="rail-footnote">ForumScope <span>·</span> локальный режим</div>
+              </aside>
+            </div>
+          </section>
+
+          <section class="view-panel" id="parser-view" data-view-panel="parser" aria-labelledby="parser-title" hidden>
+            <div class="page-heading">
+              <div><h1 id="parser-title">Посты автора</h1><p>Поиск по имени на форуме или сбор комментариев по ID.</p></div>
+            </div>
+            <section class="collection-panel parser-panel" aria-label="Параметры поиска автора">
+              <form id="user-search-form" class="form-stack">
+                <div class="mode-switch" role="group" aria-label="Режим поиска">
+                  <label><input type="radio" name="user-mode" value="username" checked><span>По имени</span></label>
+                  <label><input type="radio" name="user-mode" value="id"><span>По ID пользователя</span></label>
+                </div>
+                <label class="field-label" for="username-input" id="username-label">Имя или ключевое слово</label>
+                <div class="url-input-row"><input id="username-input" name="username" type="text" maxlength="120" required placeholder="Например, имя автора"><button class="button button-primary" id="search-user-button" type="submit">Найти сообщения</button></div>
+                <div class="field-row"><label class="field-label" for="user-max-pages">Страниц</label><input id="user-max-pages" type="number" min="1" max="100" value="1"><span class="field-hint">До 100; сервер ограничивает значением MAX_PARSER_PAGES (20 по умолчанию).</span></div>
+              </form>
+            </section>
+            <section class="parser-results" id="parser-results" aria-labelledby="parser-results-title" hidden>
+              <div class="results-heading"><div><h2 id="parser-results-title">Найденные сообщения</h2><p id="parser-results-count"></p></div><button class="button button-quiet button-small" id="export-parser-json" type="button"><svg aria-hidden="true"><use href="#icon-download"></use></svg>Скачать JSON</button></div>
+              <div class="parser-message-list" id="parser-message-list"></div>
+            </section>
+            <div class="empty-results compact-empty" id="parser-empty"><div class="empty-mark" aria-hidden="true"><svg><use href="#icon-search"></use></svg></div><h2>Введите имя или ID</h2><p>Для поиска используется публичная выдача searchengines.guru.</p></div>
+          </section>
+
+          <section class="view-panel" id="history-view" data-view-panel="history" aria-labelledby="history-title" hidden>
+            <div class="page-heading"><div><h1 id="history-title">История анализов</h1><p>Сохранённые запуски и результаты, доступные для повторного просмотра и экспорта.</p></div></div>
+            <section class="history-section" aria-label="Список анализов">
+              <div class="history-toolbar"><span id="history-summary">Последние разборы</span><button class="button button-quiet button-small" id="history-reload" type="button">Обновить</button></div>
+              <div class="table-wrap"><table class="history-table"><thead><tr><th scope="col">Тема</th><th scope="col">Источник</th><th scope="col">Ответов</th><th scope="col">Лучший балл</th><th scope="col">Дата</th><th scope="col"><span class="sr-only">Открыть</span></th></tr></thead><tbody id="history-body"></tbody></table></div>
+              <div class="empty-history" id="empty-history" hidden><h2>Сохранённых разборов пока нет</h2><p>После первого анализа он появится в этой таблице.</p><button class="button button-primary" type="button" data-view-link="workspace">Создать анализ</button></div>
+            </section>
+          </section>
+        </main>
+      </div>
+    </div>
+    <div class="toast-region" id="toast-region" role="status" aria-live="polite" aria-atomic="true"></div>
+  </body>
+</html>
